@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "esModuleInterop": true,
+    "baseUrl": "./src",
+    "paths": { 
+      "~/*": ["./*"]
+    },
+    "module": "commonjs", 
+    "target": "es5",
+    "lib": ["es2021"],
+    "outDir": "build",
+    "strict": true,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [ 
+    "src/**/*" 
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
