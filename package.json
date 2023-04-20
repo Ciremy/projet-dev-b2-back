@@ -6,8 +6,24 @@
   "repository": "https://github.com/Ciremy/projet-dev-b2-back.git",
   "author": "Ciremy",
   "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "prisma": "prisma",
+    "prisma:generate": "prisma generate",
+    "prisma:studio": "prisma studio",
+    "prisma:seed": "ts-node prisma/seed.ts",
+    "prisma:migrate": "prisma migrate dev --name init"
+  },
   "dependencies": {
+    "@prisma/client": "4.12.0",
+    "@types/node": "^18.15.11",
     "express": "^4.18.2",
-    "prisma": "^4.12.0"
+    "prisma": "^4.12.0",
+    "types": "^0.1.1",
+    "typescript": "^5.0.4",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.9.1"
   }
 }
