@@ -3,13 +3,9 @@ import { Router } from "express";
 
 const router = Router();
 
-//todo: add auth
-//todo: add validation types for ech route
-
 router.get("/", async (req, res) => {
   try {
-    const users = await prisma.user.findMany({});
-
+    const users = await prisma.ride.findMany({});
     res.status(200).json(users);
   } catch (error) {
     res.status(500).send(error);
@@ -19,9 +15,9 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await prisma.user.findUnique({
+    const user = await prisma.ride.findUnique({
       where: {
-        user_id: String(id),
+        ride_id: String(id),
       },
     });
     res.status(200).json(user);
@@ -32,45 +28,54 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { first_name, last_name, email, password, driver_license, age, sex } =
-      req.body;
-    const user = await prisma.user.create({
+    const { from, to, distance, start_time, price, ower_id, seats } = req.body;
+    const ride = await prisma.ride.create({
       data: {
-        first_name,
-        last_name,
-        email,
-        password,
-        driver_license,
-        age,
-        sex,
+        from,
+        to,
+        distance,
+        start_time,
+        price,
+        ower_id,
+        seats,
+        seats_available: seats,
       },
     });
-    res.status(200).json(user);
+    res.status(200).json(ride);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).json(error);
   }
 });
 
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { first_name, last_name, email, password, driver_license, age, sex } =
-      req.body;
-    const user = await prisma.user.update({
+    const {
+      from,
+      to,
+      distance,
+      start_time,
+      price,
+      ower_id,
+      seats,
+      seats_available,
+    } = req.body;
+    const ride = await prisma.ride.update({
       where: {
-        user_id: String(id),
+        ride_id: String(id),
       },
       data: {
-        first_name,
-        last_name,
-        email,
-        password,
-        driver_license,
-        age,
-        sex,
+        from,
+        to,
+        distance,
+        start_time,
+        price,
+        ower_id,
+        seats,
+        seats_available,
       },
     });
-    res.status(200).json(user);
+    res.status(200).json(ride);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -79,12 +84,12 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await prisma.user.delete({
+    const ride = await prisma.ride.delete({
       where: {
-        user_id: String(id),
+        ride_id: String(id),
       },
     });
-    res.status(200).json(user);
+    res.status(200).json(ride);
   } catch (error) {
     res.status(500).json(error);
   }
