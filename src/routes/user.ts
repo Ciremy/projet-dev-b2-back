@@ -3,11 +3,14 @@ import { Router } from "express";
 
 const router = Router();
 
+//todo: add auth
+//todo: add validation types for ech route
+
 router.get("/", async (req, res) => {
   try {
-    const monsters = await prisma.user.findMany({});
+    const users = await prisma.user.findMany({});
 
-    res.status(200).json(monsters);
+    res.status(200).json(users);
   } catch (error) {
     res.status(500).send(error);
   }
