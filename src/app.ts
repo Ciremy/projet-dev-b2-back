@@ -4,6 +4,7 @@ import cors from "cors";
 import user from "./routes/user";
 import ride from "./routes/ride";
 import ridePassager from "./routes/ridePassager";
+import conversation from "./routes/conversation";
 
 const app = express();
 
@@ -17,5 +18,6 @@ app.use(cors());
 app.use("/ridePassager", ridePassager);
 app.use("/user", user);
 app.use("/ride", ride);
+app.use("/conversation", conversation);
 
 export default app;
