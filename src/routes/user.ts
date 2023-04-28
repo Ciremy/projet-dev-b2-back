@@ -30,6 +30,20 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/mail/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await prisma.user.findUnique({
+      where: {
+        email: String(id),
+      },
+    });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 router.post("/", async (req, res) => {
   try {
     const { first_name, last_name, email, password, driver_license, age, sex } =
