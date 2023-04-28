@@ -23,7 +23,7 @@ model User {
   rides          Ride[]
   passagers      RidePassager[]
   comments       Comment[]
-  conversations  UserConversation[]
+  conversations  conversation[]
   messages       Message[]
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @updatedAt
@@ -70,20 +70,10 @@ model Comment {
   updatedAt  DateTime @updatedAt
 }
 
-model UserConversation {
-  user_conversation_id String       @id @default(uuid())
-  user                 User         @relation(fields: [user_id], references: [user_id])
-  user_id              String
-  conversation         conversation @relation(fields: [conversation_id], references: [conversation_id])
-  conversation_id      String
-  createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt
-}
-
 model conversation {
   conversation_id String             @id @default(uuid())
   messages        Message[]
-  users           UserConversation[]
+  users           User[]
   ride            Ride               @relation(fields: [ride_id], references: [ride_id])
   ride_id         String
   createdAt       DateTime           @default(now())
