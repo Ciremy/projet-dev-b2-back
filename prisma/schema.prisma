@@ -11,89 +11,92 @@ datasource db {
 }
 
 model User {
-  user_id        String      @id @default(uuid())
-  email     String   @unique
-  first_name      String
+  user_id        String             @id @default(uuid())
+  email          String             @unique
+  first_name     String
   last_name      String
-  password      String
-  is_admin      Boolean @default(false)
-  driver_license      String @unique @default("")
-  age      Int
-  sex      Boolean
-  rides      Ride[]
+  password       String
+  is_admin       Boolean            @default(false)
+  driver_license String             @unique @default("")
+  age            Int
+  sex            Boolean
+  rides          Ride[]
   passagers      RidePassager[]
-  comments      Comment[]
-  conversations      UserConversation[]
-  messages      Message[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  comments       Comment[]
+  conversations  UserConversation[]
+  messages       Message[]
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
 }
 
 model Ride {
-  ride_id        String      @id @default(uuid())
-  from      String
-  to      String
-  distance      Float
-  price      Float
+  ride_id         String         @id @default(uuid())
+  from            String
+  to              String
+  distance        Float
+  price           Float
   start_time      DateTime
-  owner      User @relation(fields: [ower_id], references: [user_id])
-  ower_id      String
-  seats      Int   @default(4)
-  seats_available      Int  @default(4)
-  passagers      RidePassager[]
-  conversation   conversation[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  owner           User           @relation(fields: [ower_id], references: [user_id])
+  ower_id         String
+  seats           Int            @default(4)
+  seats_available Int            @default(4)
+  passagers       RidePassager[]
+  conversation    conversation[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
 
+  Comment Comment[]
 }
 
 model RidePassager {
-  ride_passager_id        String      @id @default(uuid())
-  passager      User @relation(fields: [passager_id], references: [user_id])
+  ride_passager_id String   @id @default(uuid())
+  passager         User     @relation(fields: [passager_id], references: [user_id])
   passager_id      String
-  ride      Ride @relation(fields: [ride_id], references: [ride_id])
-  ride_id      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  ride             Ride     @relation(fields: [ride_id], references: [ride_id])
+  ride_id          String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 model Comment {
-  comment_id        String      @id @default(uuid())
-  comment      String
-  note      Int
-  user      User @relation(fields: [user_id], references: [user_id])
-  user_id      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  comment_id String   @id @default(uuid())
+  comment    String
+  note       Int
+  user       User     @relation(fields: [user_id], references: [user_id])
+  user_id    String
+  ride       Ride     @relation(fields: [ride_id], references: [ride_id])
+  ride_id    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model UserConversation {
-  user_conversation_id        String      @id @default(uuid())
-  user      User @relation(fields: [user_id], references: [user_id])
-  user_id      String
-  conversation      conversation @relation(fields: [conversation_id], references: [conversation_id])
+  user_conversation_id String       @id @default(uuid())
+  user                 User         @relation(fields: [user_id], references: [user_id])
+  user_id              String
+  conversation         conversation @relation(fields: [conversation_id], references: [conversation_id])
   conversation_id      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
 }
 
 model conversation {
-  conversation_id        String      @id @default(uuid())
-  messages      Message[]
-  users      UserConversation[]
-  ride     Ride @relation(fields: [ride_id], references: [ride_id])
-  ride_id      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  conversation_id String             @id @default(uuid())
+  messages        Message[]
+  users           UserConversation[]
+  ride            Ride               @relation(fields: [ride_id], references: [ride_id])
+  ride_id         String
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
 }
 
 model Message {
-  message_id        String      @id @default(uuid())
-  message      String
-  conversation      conversation @relation(fields: [conversation_id], references: [conversation_id])
-  conversation_id      String
-  user      User @relation(fields: [user_id], references: [user_id])
-  user_id      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  message_id      String       @id @default(uuid())
+  message         String
+  conversation    conversation @relation(fields: [conversation_id], references: [conversation_id])
+  conversation_id String
+  user            User         @relation(fields: [user_id], references: [user_id])
+  user_id         String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 }
