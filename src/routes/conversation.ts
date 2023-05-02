@@ -32,13 +32,13 @@ router.post("/", async (req, res) => {
 
   console.log(ride_id, users);
 
-  const uniqueSpells = new Set(users);
-  if (uniqueSpells.size !== users?.length) {
-    res.status(400).send("There are duplicate spells");
+  const uniqueConvMember = new Set(users);
+  if (uniqueConvMember.size !== users?.length) {
+    res.status(400).send("There are duplicate conversation members");
   }
   try {
     const userConnection = users?.map((user) => ({ user_id: user }));
-    const newMonster = await prisma.conversation.create({
+    const newConv = await prisma.conversation.create({
       data: {
         ride_id,
         users: {
@@ -49,7 +49,7 @@ router.post("/", async (req, res) => {
         users: true,
       },
     });
-    res.json(newMonster);
+    res.json(newConv);
   } catch (error) {
     res.status(500);
   }
@@ -64,6 +64,35 @@ router.delete("/:id", async (req, res) => {
       },
     });
     res.status(200).json(deletedConversation);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { ride_id, users }: { ride_id: string; users?: string[] } = req.body;
+    const uniqueConvMember = new Set(users);
+    if (uniqueConvMember.size !== users?.length) {
+      res.status(400).send("There are duplicate conversation members");
+    }
+    const userConnection = users?.map((user) => ({ user_id: user }));
+    const updatedConversation = await prisma.conversation.update({
+      where: {
+        conversation_id: id,
+      },
+      data: {
+        ride_id,
+        users: {
+          connect: userConnection,
+        },
+      },
+      include: {
+        users: true,
+      },
+    });
+    res.status(200).json(updatedConversation);
   } catch (error) {
     res.status(500).json(error);
   }
