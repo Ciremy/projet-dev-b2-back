@@ -12,12 +12,61 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+//to do fixtime zone
+//to do : remove ride where seats_available = 0
+router.get("/travel/", async (req, res) => {
+  const { start_time, from, to } = req.query;
+
+  try {
+    if (!start_time || !from || !to) {
+      res.status(400).json({ message: "Missing parameters" });
+    } else {
+      const startDate = new Date(start_time as string);
+      const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000);
+      const rides = await prisma.ride.findMany({
+        where: {
+          start_time: {
+            lte: endDate.toISOString(),
+            gte: startDate.toISOString(),
+          },
+          from: String(from),
+          to: String(to),
+        },
+      });
+      const modifiedRides = rides.map((ride) => {
+        if (ride.seats_available > 0) {
+          return ride;
+        } else {
+          return null;
+        }
+      });
+      res.status(200).json(modifiedRides.filter((ride) => ride !== null));
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+router.get("/travel/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const user = await prisma.ride.findUnique({
       where: {
         ride_id: String(id),
+      },
+    });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+router.get("/user/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await prisma.ride.findMany({
+      where: {
+        ower_id: String(id),
       },
     });
     res.status(200).json(user);

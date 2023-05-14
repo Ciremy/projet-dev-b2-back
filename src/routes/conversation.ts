@@ -4,6 +4,24 @@ import { Router } from "express";
 
 const router = Router();
 
+router.get("/user/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await prisma.conversation.findMany({
+      where: {
+        users: {
+          some: {
+            user_id: String(id),
+          },
+        },
+      },
+    });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 router.get("/", async (req, res) => {
   try {
     const users = await prisma.conversation.findMany({});
