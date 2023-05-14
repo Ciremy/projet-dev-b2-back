@@ -3,6 +3,20 @@ import { Router } from "express";
 
 const router = Router();
 
+router.get("/conversation/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await prisma.message.findMany({
+      where: {
+        conversation_id: String(id),
+      },
+    });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 router.get("/", async (req, res) => {
   try {
     const { conversation_id } = req.query;
