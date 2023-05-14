@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const { conversation_id } = req.body;
+    const { conversation_id } = req.query;
     const users = await prisma.message.findMany({
       where: {
         conversation_id: String(conversation_id),
